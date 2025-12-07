@@ -1,5 +1,6 @@
 import { ArrowLeft, Search, MapPin, Navigation } from 'lucide-react';
 import { useState } from 'react';
+import cihLogo from 'figma:asset/f5aae62986fcfdf4eae36d4fd7016b7ee4dc674c.png';
 
 interface PharmaciesPartenairesProps {
   onBack: () => void;
@@ -7,14 +8,21 @@ interface PharmaciesPartenairesProps {
 
 export function PharmaciesPartenaires({ onBack }: PharmaciesPartenairesProps) {
   const [selectedPharmacy, setSelectedPharmacy] = useState<number | null>(0);
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const pharmacies = [
+  const allPharmacies = [
     { name: 'Pharmacie Agdal', distance: '0.3 km', address: 'Adresse de Grabate, Rabat - de Ouverto', x: 35, y: 45 },
     { name: 'Pharmacie Ibn Sina', distance: '0.7 km', address: '18 Lira Agdal - Ibn Sina Ouverto', x: 55, y: 30 },
     { name: 'Pharmacie Centrale', distance: '1.1 km', address: 'Place de Ville Centrale, 123 T...', x: 45, y: 65 },
     { name: 'Pharmacie Hassan', distance: '1.4 km', address: 'Avenue Hassan II, Rabat', x: 25, y: 55 },
     { name: 'Pharmacie Souissi', distance: '1.8 km', address: 'Quartier Souissi, Rabat', x: 70, y: 50 },
   ];
+
+  // Filter pharmacies based on search query
+  const filteredPharmacies = allPharmacies.filter(pharmacy => 
+    pharmacy.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    pharmacy.address.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -25,6 +33,7 @@ export function PharmaciesPartenaires({ onBack }: PharmaciesPartenairesProps) {
             <ArrowLeft size={24} className="text-gray-700" />
           </button>
           <h1 className="text-gray-800">Pharmacies Partenaires</h1>
+          <img src={cihLogo} alt="CIH Bank" className="h-6 ml-auto" />
         </div>
       </header>
 
@@ -36,6 +45,8 @@ export function PharmaciesPartenaires({ onBack }: PharmaciesPartenairesProps) {
             <input
               type="text"
               placeholder="Rechercher une pharmacie..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-4 py-2 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -69,26 +80,29 @@ export function PharmaciesPartenaires({ onBack }: PharmaciesPartenairesProps) {
             <rect x="70%" y="70%" width="20%" height="25%" fill="#e2e8f0" opacity="0.6" rx="2" />
           </svg>
 
-          {/* Pharmacy Markers */}
-          {pharmacies.map((pharmacy, index) => (
-            <button
-              key={index}
-              onClick={() => setSelectedPharmacy(index)}
-              className="absolute transform -translate-x-1/2 -translate-y-full transition-all hover:scale-110"
-              style={{ left: `${pharmacy.x}%`, top: `${pharmacy.y}%` }}
-            >
-              <div className={`relative ${selectedPharmacy === index ? 'scale-125' : ''}`}>
-                <div className="bg-red-500 w-8 h-8 rounded-full border-3 border-white shadow-lg flex items-center justify-center">
-                  <MapPin className="text-white" size={18} fill="white" />
-                </div>
-                {selectedPharmacy === index && (
-                  <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 bg-white px-3 py-1 rounded shadow-lg whitespace-nowrap text-sm">
-                    {pharmacy.name}
+          {/* Pharmacy Markers - Only show filtered pharmacies */}
+          {filteredPharmacies.map((pharmacy, index) => {
+            const originalIndex = allPharmacies.indexOf(pharmacy);
+            return (
+              <button
+                key={originalIndex}
+                onClick={() => setSelectedPharmacy(originalIndex)}
+                className="absolute transform -translate-x-1/2 -translate-y-full transition-all hover:scale-110"
+                style={{ left: `${pharmacy.x}%`, top: `${pharmacy.y}%` }}
+              >
+                <div className={`relative ${selectedPharmacy === originalIndex ? 'scale-125' : ''}`}>
+                  <div className="bg-red-500 w-8 h-8 rounded-full border-3 border-white shadow-lg flex items-center justify-center">
+                    <MapPin className="text-white" size={18} fill="white" />
                   </div>
-                )}
-              </div>
-            </button>
-          ))}
+                  {selectedPharmacy === originalIndex && (
+                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 bg-white px-3 py-1 rounded shadow-lg whitespace-nowrap text-sm">
+                      {pharmacy.name}
+                    </div>
+                  )}
+                </div>
+              </button>
+            );
+          })}
 
           {/* User Location Indicator */}
           <div 
@@ -109,28 +123,38 @@ export function PharmaciesPartenaires({ onBack }: PharmaciesPartenairesProps) {
 
         {/* Pharmacy List */}
         <div className="bg-white">
-          {pharmacies.map((pharmacy, index) => (
-            <div 
-              key={index} 
-              className={`flex items-start gap-3 p-4 border-b last:border-b-0 ${
-                selectedPharmacy === index ? 'bg-blue-50' : ''
-              }`}
-              onClick={() => setSelectedPharmacy(index)}
-            >
-              <div className="bg-red-100 p-2 rounded-full flex-shrink-0">
-                <MapPin className="text-red-600" size={24} />
-              </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="text-gray-800">
-                  {pharmacy.name} <span className="text-sm text-gray-500">({pharmacy.distance})</span>
-                </h3>
-                <p className="text-sm text-gray-600 truncate">{pharmacy.address}</p>
-              </div>
-              <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 flex-shrink-0">
-                Y aller
-              </button>
+          {filteredPharmacies.length > 0 ? (
+            filteredPharmacies.map((pharmacy, index) => {
+              const originalIndex = allPharmacies.indexOf(pharmacy);
+              return (
+                <div 
+                  key={originalIndex} 
+                  className={`flex items-start gap-3 p-4 border-b last:border-b-0 ${
+                    selectedPharmacy === originalIndex ? 'bg-blue-50' : ''
+                  }`}
+                  onClick={() => setSelectedPharmacy(originalIndex)}
+                >
+                  <div className="bg-red-100 p-2 rounded-full flex-shrink-0">
+                    <MapPin className="text-red-600" size={24} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-gray-800">
+                      {pharmacy.name} <span className="text-sm text-gray-500">({pharmacy.distance})</span>
+                    </h3>
+                    <p className="text-sm text-gray-600 truncate">{pharmacy.address}</p>
+                  </div>
+                  <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 flex-shrink-0">
+                    Y aller
+                  </button>
+                </div>
+              );
+            })
+          ) : (
+            <div className="p-8 text-center">
+              <p className="text-gray-500">Aucune pharmacie trouvée</p>
+              <p className="text-sm text-gray-400 mt-2">Essayez une autre recherche</p>
             </div>
-          ))}
+          )}
         </div>
       </div>
     </div>

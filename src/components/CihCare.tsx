@@ -1,4 +1,4 @@
-import { ArrowLeft, MapPin, Trophy, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Gift, Wallet, Pill, Award, ChevronRight } from 'lucide-react';
 import { PageType } from '../App';
 import { useState } from 'react';
 import cihLogo from 'figma:asset/f5aae62986fcfdf4eae36d4fd7016b7ee4dc674c.png';
@@ -12,10 +12,10 @@ export function CihCare({ onBack, onNavigate }: CihCareProps) {
   const [activeTab, setActiveTab] = useState<'services' | 'plafonds' | 'operations'>('services');
 
   const services = [
-    { icon: '🎁', label: 'Avantages Carte', color: 'text-blue-500', action: null },
-    { icon: '💰', label: 'Gérer le remboursement', color: 'text-gray-700', action: 'remboursement' as PageType },
-    { icon: '💊', label: 'Pharmacies partenaires', color: 'text-gray-700', action: 'pharmacies' as PageType },
-    { icon: '🏆', label: 'Scoring', color: 'text-gray-700', action: 'scoring' as PageType },
+    { IconComponent: Gift, label: 'Avantages Carte', color: 'text-gray-600', action: 'avantages' as PageType },
+    { IconComponent: Wallet, label: 'Gérer le remboursement', color: 'text-gray-600', action: 'remboursement' as PageType },
+    { IconComponent: Pill, label: 'Pharmacies partenaires', color: 'text-gray-600', action: 'pharmacies' as PageType },
+    { IconComponent: Award, label: 'Scoring', color: 'text-gray-600', action: 'scoring' as PageType },
   ];
 
   const handleTabClick = (tab: 'services' | 'plafonds' | 'operations') => {
@@ -55,7 +55,7 @@ export function CihCare({ onBack, onNavigate }: CihCareProps) {
             </div>
             <div className="absolute bottom-6 left-6">
               <p className="text-white/80 text-xs">Titulaire</p>
-              <p className="text-white">NADA BELAHCEN</p>
+              <p className="text-white">Mlle Belahcen Nada</p>
             </div>
           </div>
 
@@ -118,23 +118,9 @@ export function CihCare({ onBack, onNavigate }: CihCareProps) {
                 className="w-full flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  {service.icon === '🎁' ? (
-                    <div className="bg-blue-50 p-2 rounded">
-                      <span className="text-xl">{service.icon}</span>
-                    </div>
-                  ) : service.icon === '💰' ? (
-                    <div className="bg-orange-50 p-2 rounded">
-                      <span className="text-xl">{service.icon}</span>
-                    </div>
-                  ) : service.icon === '💊' ? (
-                    <div className="bg-red-50 p-2 rounded">
-                      <MapPin className="text-red-500" size={20} />
-                    </div>
-                  ) : (
-                    <div className="bg-orange-50 p-2 rounded">
-                      <Trophy className="text-orange-500" size={20} />
-                    </div>
-                  )}
+                  <div className="p-2">
+                    <service.IconComponent className="text-gray-500" size={20} />
+                  </div>
                   <span className={service.color}>{service.label}</span>
                 </div>
                 <ChevronRight size={20} className="text-gray-400" />

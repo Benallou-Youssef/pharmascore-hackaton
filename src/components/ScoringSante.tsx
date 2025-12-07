@@ -67,27 +67,11 @@ export function ScoringSante({ onBack }: ScoringSanteProps) {
               strokeWidth="20"
               strokeLinecap="round"
             />
-            {/* Orange arc (good score) */}
+            {/* Progress arc in gray */}
             <path
-              d="M 30 170 A 85 85 0 0 1 100 15"
+              d="M 30 170 A 85 85 0 1 1 155 50"
               fill="none"
-              stroke="#f97316"
-              strokeWidth="20"
-              strokeLinecap="round"
-            />
-            {/* Light orange arc (medium) */}
-            <path
-              d="M 100 15 A 85 85 0 0 1 150 40"
-              fill="none"
-              stroke="#fb923c"
-              strokeWidth="20"
-              strokeLinecap="round"
-            />
-            {/* Red arc (low) */}
-            <path
-              d="M 150 40 A 85 85 0 0 1 170 170"
-              fill="none"
-              stroke="#ef4444"
+              stroke="#4b5563"
               strokeWidth="20"
               strokeLinecap="round"
             />

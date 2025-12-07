@@ -40,7 +40,7 @@ export function SideMenu({ isOpen, onClose, onNavigate }: SideMenuProps) {
           </div>
           <div>
             <p className="text-sm text-gray-600">Bienvenue,</p>
-            <p className="text-lg text-gray-800">NADA BELAHCEN</p>
+            <p className="text-lg text-gray-800">Mlle Belahcen Nada</p>
           </div>
         </div>
 

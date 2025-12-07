@@ -5,8 +5,9 @@ import { PharmaciesPartenaires } from './components/PharmaciesPartenaires';
 import { ProgrammationRemboursement } from './components/ProgrammationRemboursement';
 import { ScoringSante } from './components/ScoringSante';
 import { PlafondCihCare } from './components/PlafondCihCare';
+import { AvantagesCarte } from './components/AvantagesCarte';
 
-export type PageType = 'home' | 'cihcare' | 'pharmacies' | 'remboursement' | 'scoring' | 'plafond';
+export type PageType = 'home' | 'cihcare' | 'pharmacies' | 'remboursement' | 'scoring' | 'plafond' | 'avantages';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState<PageType>('home');
@@ -30,6 +31,9 @@ export default function App() {
       )}
       {currentPage === 'plafond' && (
         <PlafondCihCare onBack={() => setCurrentPage('cihcare')} />
+      )}
+      {currentPage === 'avantages' && (
+        <AvantagesCarte onBack={() => setCurrentPage('cihcare')} />
       )}
     </div>
   );
