@@ -55,7 +55,7 @@ export function CihCare({ onBack, onNavigate }: CihCareProps) {
             </div>
             <div className="absolute bottom-6 left-6">
               <p className="text-white/80 text-xs">Titulaire</p>
-              <p className="text-white">Mohamed Ali</p>
+              <p className="text-white">NADA BELAHCEN</p>
             </div>
           </div>
 
